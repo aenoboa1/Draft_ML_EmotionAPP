@@ -1,0 +1,166 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Engagement recognition</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html"
+                >Aplicativo</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-md-3">
+      <div class="row">
+        <div class="">
+          <h1 class="text-center hc">
+            Aplicación de un modelo supervisado de machine learning para el
+            reconocimiento facial de emociones para medir el <i>«Student Engagement»</i>
+            en un ambiente de aprendizaje online learning.
+          </h1>
+          <div class="row">
+            <div class="col-8 mx-auto mt-md-3">
+              <p class="text-center">
+                El proyecto se centra en desarrollar un modelo supervisado
+                usando machine learning para el reconocimiento facial de
+                emociones para medir el «Student Engagement» en estudiantes que
+                se encuentren en un ambiente online learning. Los procesos para
+                la ejecución del proyecto serán, realizar el entrenamiento de un
+                modelo CNN utilizando imágenes de rostros que se encuentren en
+                dataset de libre acceso para realizar la clasificación de
+                emociones, validar los resultados de clasificación obtenidos por
+                el modelo utilizando el dataset, aplicar el modelo para generar
+                resultados basados en las emociones de los estudiantes, y por
+                último, generar conclusiones a partir de los datos obtenidos con
+                la intervención de un experto.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <h2 class="text-center">Objetivo General</h2>
+            <ul class="list-group">
+              <li class="list-group-item">
+                Generar un modelo supervisado de machine learning para el
+                reconocimiento facial de emociones para medir el
+                <i>«Student Engagement»</i>.
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h2 class="text-center">Objetivo Específicos</h2>
+            <ul class="list-group">
+              <li class="list-group-item">
+                Realizar el entrenamiento de un modelo de Clasificación
+                CNN(Convolutional neural network) utilizando imágenes de rostros
+                que se encuentren en un dataset de libre acceso. (e.g :
+                AffectNet,Ascertain), para realizar la clasificación de
+                emociones
+              </li>
+              <li class="list-group-item">
+                Validar los resultados de clasificación obtenidos usando el
+                procedimiento de división train-test-val split con métricas de
+                evaluación( AUC ( Área bajo la curva ) , Matriz de
+                confusión,etc).
+              </li>
+              <li class="list-group-item">
+                Aplicar el modelo para generar resultados de clasificación
+                basado en las emociones de un estudiante
+              </li>
+              <li class="list-group-item">
+                Medir el <i>«Student Engagement»</i> en un entorno real
+                utilizando el modelo final, y validar dichos resultados con el
+                criterio de un experto.
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <hr class="mt-md-3">
+
+        <img src="img/faces.jpg" alt="Faces" class="faces img-responsive" />
+
+        <hr />
+
+        <footer class="bg-dark text-center text-white">
+          <!-- Grid container -->
+          <div class="container p-4 pb-0">
+            <!-- Section: Social media -->
+            <section class="mb-4">
+
+              <!-- Github -->
+              <a
+                class="btn btn-primary btn-floating m-1"
+                style="background-color: #333333"
+                href="https://github.com/aenoboa1/Draft_ML_EmotionAPP"
+                role="button"
+              >
+                <ion-icon name="logo-github"></ion-icon
+              ></a>
+            </section>
+            <!-- Section: Social media -->
+          </div>
+          <div
+            class="text-center p-3"
+            style="background-color: rgba(0, 0, 0, 0.2)"
+          >
+            © 2021 Copyright
+          </div>
+        </footer>
+      </div>
+    </div>
+    >
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>
