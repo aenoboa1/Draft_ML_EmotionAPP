@@ -25,7 +25,7 @@ def gen(camera):
     face_cascade_path = "dataset\haarcascade_frontalface_default.xml"
     face_cascade = cv2.CascadeClassifier(face_cascade_path)
     labels_ = ['Bored', 'Engaged', 'Confused', 'Frustrated']
-    IMG_HEIGHT, IMG_WIDTH = 224, 224
+    IMG_HEIGHT, IMG_WIDTH = 299, 299
     with detection_graph.as_default():
         with tf.compat.v1.Session(graph=detection_graph) as sess:
             while True:
@@ -49,10 +49,30 @@ def gen(camera):
 
 
                     input_tensor = detection_graph.get_tensor_by_name(input_tensor_name)
-                    output_tensor = detection_graph.get_tensor_by_name('prediction/Sigmoid:0')
-                    output_logits = sess.run(output_tensor, feed_dict={input_tensor: image})
-                    text_up = 'Bored:'+str(output_logits[0][0])+' Engaged:'+str(output_logits[0][1])
-                    text_down = 'Confused:'+str(output_logits[0][2])+' Frustrated'+str(output_logits[0][2])
+                    output_tensor_1 = detection_graph.get_tensor_by_name('y1/BiasAdd:0')
+                    output_tensor_2 = detection_graph.get_tensor_by_name('y2/BiasAdd:0')
+                    output_tensor_3 = detection_graph.get_tensor_by_name('y3/BiasAdd:0')
+                    output_tensor_4 = detection_graph.get_tensor_by_name('y4/BiasAdd:0')
+
+                    output_logits_1 = sess.run(output_tensor_1, feed_dict={input_tensor: image})
+                    output_logits_2 = sess.run(output_tensor_2, feed_dict={input_tensor: image})
+                    output_logits_3 = sess.run(output_tensor_3, feed_dict={input_tensor: image})
+                    output_logits_4 = sess.run(output_tensor_4, feed_dict={input_tensor: image})
+
+
+                    print(output_logits_2)
+                    
+                    if output_logits_2[0,0] <  -500: #Engagement Label 0 
+                        engageLabel = 0
+                    elif output_logits_2[0,3] > 34: #Engagement Label 1 
+                        engageLabel = 1
+                    else:
+                        engageLabel = np.argmax(output_logits_2)
+
+            
+
+                    text_up = ' Engaged/Concentrado :'+str(engageLabel)
+                    text_down = ' Frustrated/Frustrado'+str(np.argmax(output_logits_3))
                     # Draw rect
                     cv2.rectangle(frame, (int(x), int(y)), (int(x+w), int(y+h)), (0, 255, 0), 2)
                     # Write label Up
@@ -83,7 +103,7 @@ if __name__ == '__main__':
     tf.compat.v1.disable_eager_execution()
 
     last_model = os.listdir(checkpoint_dir)[-1]
-    chosen_model = '\Epoch_500_model.hp5'
+    chosen_model = '\Xception_on_DAiSEE_fc.h5'
     # chosen model = last_model
     save_pb = True
     if save_pb:
