@@ -22,7 +22,7 @@ def index():
 
 
 def gen(camera):
-    face_cascade_path = "dataset\haarcascade_frontalface_default.xml"
+    face_cascade_path = "realtime_testing/dataset/haarcascade_frontalface_default.xml"
     face_cascade = cv2.CascadeClassifier(face_cascade_path)
     labels_ = ['Bored', 'Engaged', 'Confused', 'Frustrated']
     IMG_HEIGHT, IMG_WIDTH = 299, 299
@@ -60,7 +60,7 @@ def gen(camera):
                     output_logits_4 = sess.run(output_tensor_4, feed_dict={input_tensor: image})
 
 
-                    print(output_logits_2)
+  
                     
                     if output_logits_2[0,0] <  -500: #Engagement Label 0 
                         engageLabel = 0
@@ -71,8 +71,8 @@ def gen(camera):
 
             
 
-                    text_up = ' Engaged/Concentrado :'+str(engageLabel)
-                    text_down = ' Frustrated/Frustrado'+str(np.argmax(output_logits_3))
+                    text_up = ' Concentrado :'+str(engageLabel) + 'Aburrido: '+str(np.max(output_logits_1))
+                    text_down = ' Frustrado'+str(np.argmax(output_logits_3)) + 'Confundido ' +str(np.max(output_logits_4))
                     # Draw rect
                     cv2.rectangle(frame, (int(x), int(y)), (int(x+w), int(y+h)), (0, 255, 0), 2)
                     # Write label Up
@@ -93,7 +93,7 @@ def video_feed():
 
 
 if __name__ == '__main__':
-    checkpoint_dir = 'checkpoints\scratch_aug'
+    checkpoint_dir = 'realtime_testing/checkpoints/scratch_aug'
     use_pretrained = False
     data_augmentation = False
     pretrained_name = 'mobilenet'
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     tf.compat.v1.disable_eager_execution()
 
     last_model = os.listdir(checkpoint_dir)[-1]
-    chosen_model = '\Xception_on_DAiSEE_fc.h5'
+    chosen_model = '/Xception_on_DAiSEE_fc.h5'
     # chosen model = last_model
     save_pb = True
     if save_pb:
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         logging.info("save pb successfully！")
 
     # Load Frozen graph
-    pb_file = checkpoint_dir + '\model.pb'
+    pb_file = checkpoint_dir + '/model.pb'
     # Load a (frozen) Tensorflow model into memory.
     detection_graph = tf.Graph()
     with detection_graph.as_default():
