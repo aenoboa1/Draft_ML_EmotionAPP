@@ -1,4 +1,4 @@
 __pycache__/
-realtime_testing\checkpoints\scratch_aug\Xception_on_DAiSEE_fc.h5
-realtime_testing\checkpoints\scratch_aug\model_new.pb
-realtime_testing\FrontEnd\node_modules
+realtime_testing/checkpoints/scratch_aug/Xception_on_DAiSEE_fc.h5
+realtime_testing/checkpoints/scratch_aug/model_new.pb
+realtime_testing/FrontEnd/node_modules

@@ -7,12 +7,14 @@ import JoinSlack from "./JoinSlack";
 import ProjectRecommendation from "./ProjectRecommendation";
 import Projects from "./Projects";
 import Invoices from "./Invoices";
+import Camara from "./Camara";
 
 function MainContent() {
   return (
     <Container>
       <Navbar />
       <SubContainer>
+        <Camara/>
         {/* <SectionOne>
           <ColumnOne1>
             <Earnings />
