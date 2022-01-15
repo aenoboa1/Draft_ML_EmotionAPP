@@ -3,18 +3,36 @@ from camera import VideoCameraModel
 import logging
 import tensorflow as tf
 from tensorflow.compat.v1 import graph_util
-from tensorflow.python.keras.models import load_model
-
+from tensorflow.python.keras.models import load_model 
+import time
 from tensorflow.python.keras import backend as K
 import os
 import cv2
 import numpy as np
+from deepface import DeepFace
 
 physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 app = Flask(__name__)
+
+# A reference server's start time for the plot.
+startTime = time.time()
+
+@app.route('/getEmotionScore', methods=['POST'])
+def getEmotionScore():
+    data = request.data
+    data = np.array(json.loads(data))
+
+    # Preprocessing
+    data = data.reshape((240, 320, 4)).astype('uint8')
+
+    pred = DeepFace.analyze(data, actions=['emotion'])
+    pred['timestamp'] = time.time() - startTime
+
+    return pred
+
 
 @app.route('/')
 def index():

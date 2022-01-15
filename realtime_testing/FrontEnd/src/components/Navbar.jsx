@@ -5,7 +5,7 @@ function Navbar() {
   return (
     <NavbarContainer>
       <Text>
-        Universidad de las Fuerzas Armdas Espe,
+        Universidad de las Fuerzas Armadas Espe,
         <span> Diseño Evaluac. Proyectos TI</span>
       </Text>
       <InputContainer>

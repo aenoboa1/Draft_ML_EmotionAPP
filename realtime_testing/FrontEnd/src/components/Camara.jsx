@@ -4,20 +4,21 @@ import { cardShadow, hoverEffect, themeColor } from "../utils";
 import axios from 'axios'
 
 function Camara (){
-
     
     return(
         <SectionOne>
-
             <img src={'http://localhost:5000/video_feed'} className="App-logo" alt="logo" />
-
         </SectionOne>    
 
     );
 
 }
 
+
+
+
 export default Camara;
+
 
 const SectionOne = styled.div`
   display: flex;

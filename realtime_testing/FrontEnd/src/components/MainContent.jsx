@@ -8,13 +8,22 @@ import ProjectRecommendation from "./ProjectRecommendation";
 import Projects from "./Projects";
 import Invoices from "./Invoices";
 import Camara from "./Camara";
+import Emotiontimeline from "./Emotiontimeline";
 
 function MainContent() {
   return (
     <Container>
       <Navbar />
       <SubContainer>
+        {/* <Webcam/> */}
+
+        <Emotiontimeline/>
+
+      
         <Camara/>
+        {/* <Webcam/> */}
+
+
         {/* <SectionOne>
           <ColumnOne1>
             <Earnings />
@@ -38,6 +47,8 @@ function MainContent() {
             <ProjectRecommendation />
           </ColumnTwo2>
         </SectionTwo> */}
+
+
       </SubContainer>
     </Container>
   );
