@@ -1,4 +1,5 @@
 import cv2
+from flask import Flask, request, render_template, Response
 
 class VideoCameraModel(object):
     def __init__(self,):
@@ -9,6 +10,7 @@ class VideoCameraModel(object):
 
     def set_frame_rate(self, fps):
         return self.video.set(cv2.CAP_PROP_FPS, fps)
+
 
     def get_frame(self):
         # Get picture from video stream

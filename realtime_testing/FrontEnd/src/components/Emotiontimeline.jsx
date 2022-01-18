@@ -106,6 +106,22 @@ const Emotiontimeline = () => {
             });
     };
 
+    const takePhoto = () => {
+        let photo = photoRef.current;
+        let strip = stripRef.current;
+
+        console.warn(strip);
+
+        const data = photo.toDataURL("image/jpeg");
+
+        console.warn(data);
+        const link = document.createElement("a");
+        link.href = data;
+        link.setAttribute("download", "myWebcam");
+        link.innerHTML = `<img src='${data}' alt='thumbnail'/>`;
+        strip.insertBefore(link, strip.firstChild);
+    };
+
     const paintToCanvas = () => {
         let video = videoRef.current;
         let photo = photoRef.current;
@@ -187,9 +203,9 @@ const Emotiontimeline = () => {
 
     return (
         <div>
+            <button onClick={() => takePhoto()}>Take a photo</button>
             
             <video onCanPlay={() => paintToCanvas()} ref={videoRef} />
-            
             <canvas ref={photoRef} />
             <div>
                 <div ref={stripRef} />
@@ -200,7 +216,6 @@ const Emotiontimeline = () => {
                 {emotionsPlot}
                 
             </div>
-
 
         </div>
     );

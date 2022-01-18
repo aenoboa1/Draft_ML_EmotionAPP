@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { IoStatsChart } from "react-icons/io5";
+import { BsFillCameraVideoFill } from "react-icons/bs";
 import { themeColor, hoverEffect } from "../utils";
 
 function Earnings() {
@@ -8,11 +9,13 @@ function Earnings() {
     <EarningsCard>
       <CardContent>
         <Chart>
-          <IoStatsChart />
+          <BsFillCameraVideoFill />
         </Chart>
-        <EarningsText>Earnings</EarningsText>
-        <Earning>$7,890</Earning>
-        <EarningsIncrease>+ 10% since last month</EarningsIncrease>
+        <EarningsText>Videos</EarningsText>
+        <Earning>9068</Earning>
+        <a href="https://iith.ac.in/~daisee-dataset/" target="_blank" className='links'>
+        <EarningsIncrease>from Daisee</EarningsIncrease>
+        </a>
       </CardContent>
     </EarningsCard>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import AvatarImage from "../assets/avatarImage2.jpg";
+import AvatarImage from "../assets/Avatar1.jpg";
 import AvatarImage2 from "../assets/avatarImage3.jpg";
 import { cardShadow, hoverEffect, themeColor } from "../utils";
 
@@ -12,20 +12,20 @@ function Projects() {
           <img src={AvatarImage} alt="" />
         </Avatar>
         <Detail>
-          <Title>Logo design for Bakery</Title>
-          <SubTitle>1 day remaining</SubTitle>
+          <Title>Omar González</Title>
+          <SubTitle>Tecnologías de la información</SubTitle>
         </Detail>
       </Project>
       <Project>
         <Avatar>
-          <img src={AvatarImage2} alt="" />
+          <img src={AvatarImage} alt="" />
         </Avatar>
         <Detail>
-          <Title>Personal branding project</Title>
-          <SubTitle>5 days remaining</SubTitle>
+          <Title>Andres Noboa</Title>
+          <SubTitle>Tecnologías de la información</SubTitle>
         </Detail>
       </Project>
-      <AllProjects>See all projects</AllProjects>
+      <AllProjects> <a href="https://forms.gle/14B9xCec1tKpywXN8" target="_blank" className="links0">Encuesta</a>  </AllProjects>
     </YourProjects>
   );
 }

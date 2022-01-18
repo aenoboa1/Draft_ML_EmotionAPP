@@ -14,13 +14,23 @@ function MainContent() {
   return (
     <Container>
       <Navbar />
-      <SubContainer>
-        {/* <Webcam/> */}
-
-        <Emotiontimeline/>
-
       
+    
+      <SubContainer>
         <Camara/>
+        <SectionOne>
+          <ColumnOne1>
+            <Earnings />
+            <Info />
+          </ColumnOne1>
+          <ColumnTwo1>
+            <TitleText>Desarrolladores</TitleText>
+            <Projects />
+          </ColumnTwo1>
+        </SectionOne>
+ 
+
+
         {/* <Webcam/> */}
 
 
@@ -53,7 +63,6 @@ function MainContent() {
     </Container>
   );
 }
-
 const Container = styled.div`
   width: 80%;
   background: linear-gradient(to bottom right, white 0%, #e6e4ff 70%);

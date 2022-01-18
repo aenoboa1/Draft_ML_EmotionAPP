@@ -1,9 +1,17 @@
-from flask import Flask, render_template, Response
+from flask import Flask, request, render_template, Response
+from flask_cors import CORS
+import json
+import time
+from PIL import Image
+import numpy as np
+from matplotlib import pyplot as plt
+import keras
+import tensorflow_hub as hub
 from camera import VideoCameraModel
 import logging
 import tensorflow as tf
 from tensorflow.compat.v1 import graph_util
-from tensorflow.python.keras.models import load_model 
+from tensorflow.python.keras.models import load_model
 import time
 from tensorflow.python.keras import backend as K
 import os
@@ -16,9 +24,11 @@ if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 app = Flask(__name__)
+CORS(app)
 
 # A reference server's start time for the plot.
 startTime = time.time()
+
 
 @app.route('/getEmotionScore', methods=['POST'])
 def getEmotionScore():
@@ -27,10 +37,8 @@ def getEmotionScore():
 
     # Preprocessing
     data = data.reshape((240, 320, 4)).astype('uint8')
-
     pred = DeepFace.analyze(data, actions=['emotion'])
     pred['timestamp'] = time.time() - startTime
-
     return pred
 
 
@@ -54,8 +62,11 @@ def gen(camera):
                     # Resizing
                     image = np.array(frame)
                     image = image[y:y + h, x:x + w]
-                    image = cv2.resize(image, (IMG_HEIGHT, IMG_WIDTH), interpolation=cv2.INTER_AREA)
+                    image = cv2.resize(image, (IMG_HEIGHT, IMG_WIDTH),
+                                       interpolation=cv2.INTER_AREA)
                     image = np.expand_dims(image, axis=0)
+
+
                     # classification
                     if use_pretrained:
                         input_tensor_name = 'mobilenetv2_1.00_224_input:0'
@@ -65,43 +76,58 @@ def gen(camera):
                         else:
                             input_tensor_name = 'input_2:0'
 
+                    input_tensor = detection_graph.get_tensor_by_name(
+                        input_tensor_name)
+                    output_tensor_1 = detection_graph.get_tensor_by_name(
+                        'y1/BiasAdd:0')
+                    output_tensor_2 = detection_graph.get_tensor_by_name(
+                        'y2/BiasAdd:0')
+                    output_tensor_3 = detection_graph.get_tensor_by_name(
+                        'y3/BiasAdd:0')
+                    output_tensor_4 = detection_graph.get_tensor_by_name(
+                        'y4/BiasAdd:0')
 
-                    input_tensor = detection_graph.get_tensor_by_name(input_tensor_name)
-                    output_tensor_1 = detection_graph.get_tensor_by_name('y1/BiasAdd:0')
-                    output_tensor_2 = detection_graph.get_tensor_by_name('y2/BiasAdd:0')
-                    output_tensor_3 = detection_graph.get_tensor_by_name('y3/BiasAdd:0')
-                    output_tensor_4 = detection_graph.get_tensor_by_name('y4/BiasAdd:0')
+                    output_logits_1 = sess.run(output_tensor_1,
+                                               feed_dict={input_tensor: image})
+                    output_logits_2 = sess.run(output_tensor_2,
+                                               feed_dict={input_tensor: image})
+                    output_logits_3 = sess.run(output_tensor_3,
+                                               feed_dict={input_tensor: image})
+                    output_logits_4 = sess.run(output_tensor_4,
+                                               feed_dict={input_tensor: image})
 
-                    output_logits_1 = sess.run(output_tensor_1, feed_dict={input_tensor: image})
-                    output_logits_2 = sess.run(output_tensor_2, feed_dict={input_tensor: image})
-                    output_logits_3 = sess.run(output_tensor_3, feed_dict={input_tensor: image})
-                    output_logits_4 = sess.run(output_tensor_4, feed_dict={input_tensor: image})
-
-
-  
-                    
-                    if output_logits_2[0,0] <  -500: #Engagement Label 0 
+                    if output_logits_2[0, 0] < -500:  #Engagement Label 0
                         engageLabel = 0
-                    elif output_logits_2[0,3] > 34: #Engagement Label 1 
+                    elif output_logits_2[0, 3] > 34:  #Engagement Label 1
                         engageLabel = 1
                     else:
                         engageLabel = np.argmax(output_logits_2)
+                    
+                    print(output_logits_1)
 
-            
-
-                    text_up = ' Concentrado :'+str(engageLabel) + 'Aburrido: '+str(np.max(output_logits_1))
-                    text_down = ' Frustrado'+str(np.argmax(output_logits_3)) + 'Confundido ' +str(np.max(output_logits_4))
+                    text_up = ' Concentrado :' + str(
+                        engageLabel ) + ', Aburrido: ' + str(
+                            np.argmax(output_logits_1))
+                    text_down = ' Frustrado' + str(
+                        np.argmax(output_logits_3)) + ', Confundido ' + str(
+                            np.argmax(output_logits_4))
                     # Draw rect
-                    cv2.rectangle(frame, (int(x), int(y)), (int(x+w), int(y+h)), (0, 255, 0), 2)
+                    cv2.rectangle(frame, (int(x), int(y)),
+                                  (int(x + w), int(y + h)), (0, 255, 0), 2)
                     # Write label Up
-                    cv2.putText(frame, text_up, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
+                    cv2.putText(frame, text_up, (x, y - 10),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12),
+                                2)
                     # Write label Down
-                    cv2.putText(frame, text_down, (x, y + h + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
+                    cv2.putText(frame, text_down, (x, y + h + 20),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12),
+                                2)
                     break
                 ret, jpeg = cv2.imencode('.jpg', frame)
                 frame = jpeg.tobytes()
                 yield (b'--frame\r\n'
-                       b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame +
+                       b'\r\n\r\n')
 
 
 @app.route('/video_feed')
@@ -110,36 +136,37 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
+
 if __name__ == '__main__':
-    checkpoint_dir = 'realtime_testing/checkpoints/scratch_aug'
+    checkpoint_dir = 'realtime_testing\checkpoints\scratch_aug'
     use_pretrained = False
     data_augmentation = False
     pretrained_name = 'mobilenet'
 
-
-    # necessary !!!
+    # # necessary !!!
     tf.compat.v1.disable_eager_execution()
 
-    last_model = os.listdir(checkpoint_dir)[-1]
-    chosen_model = '/Xception_on_DAiSEE_fc.h5'
-    # chosen model = last_model
-    save_pb = True
-    if save_pb:
-        h5_path = checkpoint_dir + chosen_model
-        model = load_model(h5_path, compile=False)
-        # save pb
-        with K.get_session() as sess:
-            output_names = [out.op.name for out in model.outputs]
-            input_graph_def = sess.graph.as_graph_def()
-            for node in input_graph_def.node:
-                node.device = ""
-            graph = graph_util.remove_training_nodes(input_graph_def)
-            graph_frozen = graph_util.convert_variables_to_constants(sess, graph, output_names)
-            tf.io.write_graph(graph_frozen, checkpoint_dir, 'model.pb', as_text=False)
-        logging.info("save pb successfully！")
+    # last_model = os.listdir(checkpoint_dir)[-1]
+    # chosen_model = '\Xception_on_DAiSEE_fc.h5'
+    # # chosen model = last_model
+    # save_pb = True
+    # if save_pb:
+    #     h5_path = checkpoint_dir + chosen_model
+    #     model = load_model(h5_path, compile=False)
+    #     # save pb
+    #     with K.get_session() as sess:
+    #         output_names = [out.op.name for out in model.outputs]
+    #         input_graph_def = sess.graph.as_graph_def()
+    #         for node in input_graph_def.node:
+    #             node.device = ""
+    #         graph = graph_util.remove_training_nodes(input_graph_def)
+    #         graph_frozen = graph_util.convert_variables_to_constants(sess, graph, output_names)
+    #         tf.io.write_graph(graph_frozen, checkpoint_dir, 'model.pb', as_text=False)
+    #     logging.info("save pb successfully！")
 
     # Load Frozen graph
-    pb_file = checkpoint_dir + '/model.pb'
+
+    pb_file = checkpoint_dir + '\model.pb'
     # Load a (frozen) Tensorflow model into memory.
     detection_graph = tf.Graph()
     with detection_graph.as_default():

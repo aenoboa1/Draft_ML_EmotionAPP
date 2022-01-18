@@ -7,7 +7,7 @@ function Camara (){
     
     return(
         <SectionOne>
-            <img src={'http://localhost:5000/video_feed'} className="App-logo" alt="logo" />
+            <img id='camera_feed' src={'http://localhost:5000/video_feed'} className="App-logo" alt="logo" />
         </SectionOne>    
 
     );
@@ -23,7 +23,7 @@ export default Camara;
 const SectionOne = styled.div`
   display: flex;
   justify-content: center;
-  height: 40%;
+  height: 60%;
   gap: 2rem;
   width: 100%;
   @media screen and (min-width: 320px) and (max-width: 1080px) {

@@ -28,3 +28,40 @@ li {
   color: rgb(133, 9, 190);
 
 }
+.links0 {
+  text-decoration: none;
+  color: rgb(125, 14, 153);
+}
+.links0:hover {
+  text-decoration: none;
+  color: rgb(159, 83, 194);
+
+}
+.aDaisee{
+  margin-top: 20px;
+}
+
+.Concentrado0{
+  background-color: rgb(141, 231, 160);
+}
+.Concentrado1{
+  background-color: rgb(47, 219, 90);
+}
+.Aburrido0{
+  background-color: rgb(218, 240, 140);
+}
+.Aburrido1{
+  background-color: rgb(219, 208, 47);
+}
+.Confundido0{
+  background-color: rgba(183, 194, 243, 0.3);
+}
+.Confundido1{
+  background-color: #6100d4;
+}
+.Frustrado0{
+  background-color: rgb(233, 126, 126);
+}
+.Frustrado1{
+  background-color: rgb(245, 84, 84);
+}
